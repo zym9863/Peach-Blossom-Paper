@@ -1,7 +1,111 @@
-# Tauri + Preact + Typescript
+# 桃花笺 (Peach Blossom Paper)
 
-This template should help get you started developing with Tauri, Preact and Typescript in Vite.
+一个优雅的个人记忆日记应用，让您安全地记录和回味人生中的珍贵时光。
 
-## Recommended IDE Setup
+## ✨ 特性
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+### 🔒 安全加密
+- 端到端加密保护您的隐私记忆
+- 本地存储，数据完全由您掌控
+- 支持密码保护的记忆条目
+
+### 📝 丰富的记忆类型
+- **文本记忆**：记录思绪、感悟和日常
+- **图片记忆**：保存珍贵的视觉瞬间
+- **音频记忆**：录制声音片段和回忆
+- **混合记忆**：组合多种媒体类型
+
+### 💫 情感标签系统
+为每个记忆添加情感色彩：
+- 🌟 **喜悦** - 快乐的时光
+- 💙 **悲伤** - 忧郁的瞬间
+- 🌸 **怀念** - 思念的回忆
+- 🌱 **希望** - 充满期待的时刻
+- 🍂 **悔过** - 反思的记录
+- 💝 **难舍** - 珍贵的眷恋
+- 🔥 **执着** - 坚持的信念
+
+### 🌙 拾梦回响
+- 随机展示过往记忆片段
+- 让您意外重温美好时光
+- 智能的记忆回顾机制
+
+## 🛠️ 技术栈
+
+- **前端**: Preact + TypeScript + Vite
+- **后端**: Tauri (Rust)
+- **加密**: AES-GCM + Argon2
+- **UI**: 自定义 CSS + Lucide Icons
+- **状态管理**: Preact Signals
+
+## 🚀 开发环境设置
+
+### 前置要求
+- Node.js (推荐 18+)
+- Rust (最新稳定版)
+- pnpm
+
+### 安装依赖
+```bash
+pnpm install
+```
+
+### 开发模式
+```bash
+pnpm tauri dev
+```
+
+### 构建应用
+```bash
+pnpm tauri build
+```
+
+## 📁 项目结构
+
+```
+src/
+├── components/
+│   ├── DreamEchoes/     # 拾梦回响组件
+│   └── MemorySeal/      # 记忆封印组件
+├── hooks/               # 自定义 Hooks
+├── stores/              # 状态管理
+├── types/               # TypeScript 类型定义
+├── utils/               # 工具函数
+│   └── crypto/          # 加密相关
+└── App.tsx              # 主应用组件
+
+src-tauri/
+├── src/
+│   ├── commands.rs      # Tauri 命令
+│   ├── crypto.rs        # 加密实现
+│   ├── models.rs        # 数据模型
+│   └── storage.rs       # 存储管理
+└── Cargo.toml           # Rust 依赖配置
+```
+
+## 🎨 设计理念
+
+桃花笺采用古典雅致的设计风格，灵感来源于中国传统文化中的"桃花笺"——一种用于书写情感和记忆的精美纸张。应用界面融合了现代简约与古典美学，为用户提供沉浸式的记忆记录体验。
+
+## 🔐 隐私保护
+
+- 所有敏感数据均在本地加密存储
+- 使用工业级 AES-GCM 加密算法
+- 密码通过 Argon2 进行安全哈希
+- 无网络传输，完全离线运行
+
+## 📄 许可证
+
+本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
+
+## 🤝 贡献
+
+欢迎提交 Issue 和 Pull Request 来帮助改进这个项目。
+
+## 💝 致谢
+
+感谢所有为这个项目贡献代码和想法的开发者们。
+
+---
+
+*"时光荏苒，记忆如花。愿每一份珍贵的回忆，都能在桃花笺中永远绽放。"*

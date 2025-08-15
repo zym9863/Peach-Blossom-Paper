@@ -10,14 +10,22 @@
     "tauri": "tauri"
   },
   "dependencies": {
-    "preact": "^10.25.1",
+    "@preact/signals": "^2.2.1",
     "@tauri-apps/api": "^2",
-    "@tauri-apps/plugin-opener": "^2"
+    "@tauri-apps/plugin-dialog": "^2.3.2",
+    "@tauri-apps/plugin-fs": "^2.4.1",
+    "@tauri-apps/plugin-notification": "^2.3.0",
+    "@tauri-apps/plugin-opener": "^2",
+    "@types/crypto-js": "^4.2.2",
+    "crypto-js": "^4.2.0",
+    "date-fns": "^4.1.0",
+    "lucide-preact": "^0.539.0",
+    "preact": "^10.25.1"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.9.3",
+    "@tauri-apps/cli": "^2",
     "typescript": "~5.6.2",
-    "vite": "^6.0.3",
-    "@tauri-apps/cli": "^2"
+    "vite": "^6.0.3"
   }
 }
