@@ -260,85 +260,138 @@ export function MemoryList({ entries, onSelect, onDelete, filter, onFilterChange
         .memory-list {
           max-width: 1200px;
           margin: 0 auto;
-          padding: 20px;
+          padding: 24px;
+          animation: fadeIn 0.5s ease;
         }
 
         .list-header {
-          margin-bottom: 24px;
+          margin-bottom: 32px;
         }
 
         .search-bar {
           display: flex;
-          gap: 12px;
+          gap: 16px;
           align-items: center;
-          margin-bottom: 16px;
+          margin-bottom: 20px;
+          flex-wrap: wrap;
         }
 
         .search-input-group {
           position: relative;
           flex: 1;
-          max-width: 400px;
+          max-width: 500px;
+          min-width: 280px;
         }
 
         .search-icon {
           position: absolute;
-          left: 12px;
+          left: 16px;
           top: 50%;
           transform: translateY(-50%);
-          color: #999;
+          color: #95a5a6;
+          pointer-events: none;
         }
 
         .search-input {
           width: 100%;
-          padding: 12px 12px 12px 44px;
-          border: 2px solid #e0e0e0;
-          border-radius: 8px;
-          font-size: 14px;
-          transition: border-color 0.2s ease;
+          padding: 14px 16px 14px 48px;
+          border: 2px solid rgba(0, 0, 0, 0.08);
+          border-radius: 16px;
+          font-size: 15px;
+          transition: all 0.3s ease;
+          background: rgba(255, 255, 255, 0.9);
+          backdrop-filter: blur(10px);
         }
 
         .search-input:focus {
           outline: none;
-          border-color: #d4567a;
+          border-color: #ff6b9d;
+          background: white;
+          box-shadow: 0 0 0 4px rgba(255, 107, 157, 0.1);
+        }
+
+        .search-input::placeholder {
+          color: #bdc3c7;
         }
 
         .btn {
           display: flex;
           align-items: center;
           gap: 8px;
-          padding: 12px 16px;
+          padding: 12px 20px;
           border: none;
-          border-radius: 8px;
+          border-radius: 14px;
           font-size: 14px;
-          font-weight: 500;
+          font-weight: 600;
           cursor: pointer;
-          transition: all 0.2s ease;
+          transition: all 0.25s ease;
           white-space: nowrap;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .btn::before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 0;
+          height: 0;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.3);
+          transform: translate(-50%, -50%);
+          transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:active::before {
+          width: 200px;
+          height: 200px;
         }
 
         .btn-primary {
-          background: #d4567a;
+          background: linear-gradient(135deg, #ff6b9d, #c44569);
           color: white;
+          box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
         }
 
         .btn-primary:hover {
-          background: #c44569;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(255, 107, 157, 0.4);
         }
 
         .btn-secondary {
-          background: #f5f5f5;
-          color: #666;
+          background: rgba(255, 255, 255, 0.9);
+          color: #7f8c8d;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          backdrop-filter: blur(10px);
         }
 
         .btn-secondary:hover {
-          background: #e0e0e0;
+          background: white;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
 
         .filters-panel {
-          background: #f9f9f9;
-          border-radius: 8px;
-          padding: 20px;
-          border: 1px solid #e0e0e0;
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          border-radius: 20px;
+          padding: 24px;
+          border: 1px solid rgba(255, 107, 157, 0.1);
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+          animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+          from {
+            opacity: 0;
+            transform: translateY(-10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
 
         .filter-group {
@@ -367,21 +420,46 @@ export function MemoryList({ entries, onSelect, onDelete, filter, onFilterChange
         }
 
         .emotion-filter-tag {
-          padding: 6px 12px;
+          padding: 8px 16px;
           border: 2px solid var(--tag-color);
-          background: transparent;
+          background: rgba(255, 255, 255, 0.8);
           color: var(--tag-color);
-          border-radius: 16px;
-          font-size: 12px;
-          font-weight: 500;
+          border-radius: 20px;
+          font-size: 13px;
+          font-weight: 600;
           cursor: pointer;
-          transition: all 0.2s ease;
+          transition: all 0.25s ease;
+          position: relative;
+          overflow: hidden;
         }
 
-        .emotion-filter-tag:hover,
+        .emotion-filter-tag::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: var(--tag-color);
+          opacity: 0;
+          transition: opacity 0.25s ease;
+          z-index: 0;
+        }
+
+        .emotion-filter-tag:hover {
+          transform: translateY(-2px) scale(1.05);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .emotion-filter-tag:hover::before {
+          opacity: 0.1;
+        }
+
         .emotion-filter-tag.selected {
           background: var(--tag-color);
           color: white;
+          transform: scale(1.05);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
         .filter-actions {
@@ -396,44 +474,72 @@ export function MemoryList({ entries, onSelect, onDelete, filter, onFilterChange
 
         .empty-state {
           text-align: center;
-          padding: 60px 20px;
-          color: #999;
+          padding: 80px 20px;
+          color: #95a5a6;
+          animation: fadeIn 0.5s ease;
         }
 
         .empty-icon {
-          color: #d4567a;
-          margin-bottom: 16px;
+          color: #ff6b9d;
+          margin-bottom: 20px;
+          filter: drop-shadow(0 4px 8px rgba(255, 107, 157, 0.3));
+          animation: pulse 2s ease-in-out infinite;
         }
 
         .empty-state h3 {
-          margin: 0 0 8px 0;
-          color: #666;
+          margin: 0 0 12px 0;
+          color: #2c3e50;
+          font-size: 22px;
+          font-weight: 700;
         }
 
         .empty-state p {
           margin: 0;
+          font-size: 16px;
+          color: #7f8c8d;
         }
 
         .entries-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-          gap: 20px;
+          grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+          gap: 24px;
+          animation: fadeIn 0.6s ease;
         }
 
         .memory-card {
-          background: white;
-          border-radius: 12px;
-          padding: 20px;
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          border-radius: 20px;
+          padding: 24px;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
           cursor: pointer;
-          transition: all 0.2s ease;
-          border: 2px solid transparent;
+          transition: all 0.3s ease;
+          border: 1px solid rgba(255, 255, 255, 0.5);
+          position: relative;
+          overflow: hidden;
+        }
+
+        .memory-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 3px;
+          background: linear-gradient(90deg, #ff6b9d, #feca57, #66d9ef);
+          opacity: 0;
+          transition: opacity 0.3s ease;
         }
 
         .memory-card:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-          border-color: #d4567a;
+          transform: translateY(-6px) scale(1.02);
+          box-shadow: 0 12px 40px rgba(255, 107, 157, 0.15);
+          border-color: rgba(255, 107, 157, 0.3);
+        }
+
+        .memory-card:hover::before {
+          opacity: 1;
         }
 
         .card-header {
@@ -445,12 +551,13 @@ export function MemoryList({ entries, onSelect, onDelete, filter, onFilterChange
 
         .card-title {
           margin: 0;
-          font-size: 16px;
-          font-weight: 600;
-          color: #333;
+          font-size: 18px;
+          font-weight: 700;
+          color: #2c3e50;
           line-height: 1.4;
           flex: 1;
           margin-right: 12px;
+          letter-spacing: 0.3px;
         }
 
         .card-actions {
@@ -465,32 +572,35 @@ export function MemoryList({ entries, onSelect, onDelete, filter, onFilterChange
         }
 
         .action-btn {
-          padding: 6px;
+          padding: 8px;
           border: none;
-          border-radius: 6px;
+          border-radius: 10px;
           cursor: pointer;
-          transition: all 0.2s ease;
+          transition: all 0.25s ease;
           display: flex;
           align-items: center;
           justify-content: center;
+          backdrop-filter: blur(10px);
         }
 
         .edit-btn {
-          background: #f0f8ff;
-          color: #4a90e2;
+          background: rgba(102, 217, 239, 0.1);
+          color: #66d9ef;
         }
 
         .edit-btn:hover {
-          background: #e6f3ff;
+          background: rgba(102, 217, 239, 0.2);
+          transform: scale(1.1);
         }
 
         .delete-btn {
-          background: #fff0f0;
-          color: #e74c3c;
+          background: rgba(238, 90, 111, 0.1);
+          color: #ee5a6f;
         }
 
         .delete-btn:hover {
-          background: #ffe6e6;
+          background: rgba(238, 90, 111, 0.2);
+          transform: scale(1.1);
         }
 
         .card-content {
@@ -499,9 +609,13 @@ export function MemoryList({ entries, onSelect, onDelete, filter, onFilterChange
 
         .content-preview {
           margin: 0;
-          color: #666;
-          line-height: 1.5;
-          font-size: 14px;
+          color: #7f8c8d;
+          line-height: 1.6;
+          font-size: 15px;
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
         }
 
         .card-footer {
@@ -518,9 +632,13 @@ export function MemoryList({ entries, onSelect, onDelete, filter, onFilterChange
         .meta-item {
           display: flex;
           align-items: center;
-          gap: 4px;
-          font-size: 12px;
-          color: #999;
+          gap: 6px;
+          font-size: 13px;
+          color: #95a5a6;
+        }
+
+        .meta-item svg {
+          color: #bdc3c7;
         }
 
         .card-tags {
@@ -531,18 +649,22 @@ export function MemoryList({ entries, onSelect, onDelete, filter, onFilterChange
         }
 
         .emotion-tag {
-          padding: 3px 8px;
+          padding: 4px 10px;
           background: var(--tag-color);
           color: white;
-          border-radius: 10px;
-          font-size: 10px;
-          font-weight: 500;
+          border-radius: 12px;
+          font-size: 11px;
+          font-weight: 600;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
         }
 
         .more-tags {
-          font-size: 10px;
-          color: #999;
-          font-weight: 500;
+          font-size: 11px;
+          color: #95a5a6;
+          font-weight: 600;
+          background: rgba(0, 0, 0, 0.05);
+          padding: 4px 8px;
+          border-radius: 12px;
         }
 
         @media (max-width: 768px) {

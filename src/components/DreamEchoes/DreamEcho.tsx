@@ -191,7 +191,7 @@ export function DreamEcho({ entry, onDismiss, onViewFull }: DreamEchoProps) {
           align-items: center;
           justify-content: center;
           opacity: 0;
-          transition: opacity 0.3s ease;
+          transition: opacity 0.4s ease;
         }
 
         .dream-echo-overlay.visible {
@@ -208,28 +208,47 @@ export function DreamEcho({ entry, onDismiss, onViewFull }: DreamEchoProps) {
           left: 0;
           right: 0;
           bottom: 0;
-          background: rgba(0, 0, 0, 0.6);
-          backdrop-filter: blur(4px);
+          background: linear-gradient(135deg, rgba(255, 107, 157, 0.3), rgba(102, 217, 239, 0.2));
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
         }
 
         .dream-echo-card {
           position: relative;
-          max-width: 500px;
+          max-width: 520px;
           width: 90%;
-          background: linear-gradient(135deg, #fff5f8 0%, #ffe8ed 100%);
-          border-radius: 20px;
-          padding: 32px;
-          box-shadow: 0 20px 40px rgba(212, 86, 122, 0.3);
-          border: 2px solid rgba(212, 86, 122, 0.2);
-          transform: scale(0.9);
-          animation: dreamEchoAppear 0.3s ease forwards;
-          overflow: hidden;
+          background: rgba(255, 255, 255, 0.98);
+          backdrop-filter: blur(30px) saturate(1.5);
+          -webkit-backdrop-filter: blur(30px) saturate(1.5);
+          border-radius: 32px;
+          padding: 40px;
+          box-shadow: 
+            0 30px 60px rgba(255, 107, 157, 0.25),
+            0 0 0 1px rgba(255, 255, 255, 0.3) inset;
+          border: 1px solid rgba(255, 107, 157, 0.2);
+          transform: scale(0.8) translateY(20px);
+          animation: dreamEchoAppear 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+          overflow: visible;
         }
 
         @keyframes dreamEchoAppear {
           to {
-            transform: scale(1);
+            transform: scale(1) translateY(0);
           }
+        }
+
+        .dream-echo-card::before {
+          content: '';
+          position: absolute;
+          top: -100px;
+          left: -100px;
+          right: -100px;
+          bottom: -100px;
+          background: 
+            radial-gradient(circle at 20% 30%, rgba(255, 107, 157, 0.15) 0%, transparent 40%),
+            radial-gradient(circle at 80% 70%, rgba(102, 217, 239, 0.15) 0%, transparent 40%);
+          pointer-events: none;
+          z-index: -1;
         }
 
         .decoration-elements {
@@ -244,37 +263,42 @@ export function DreamEcho({ entry, onDismiss, onViewFull }: DreamEchoProps) {
 
         .decoration-icon {
           position: absolute;
-          color: rgba(212, 86, 122, 0.3);
-          animation: float 3s ease-in-out infinite;
+          filter: drop-shadow(0 2px 4px rgba(255, 107, 157, 0.3));
+          animation: float 4s ease-in-out infinite;
         }
 
         .wind {
-          top: 20px;
-          right: 20px;
+          top: 30px;
+          right: 30px;
+          color: rgba(254, 202, 87, 0.5);
           animation-delay: 0s;
         }
 
         .moon {
-          top: 20px;
-          left: 20px;
+          top: 30px;
+          left: 30px;
+          color: rgba(102, 217, 239, 0.5);
           animation-delay: 1s;
         }
 
         .star1 {
-          top: 60px;
-          right: 60px;
+          top: 70px;
+          right: 70px;
+          color: rgba(255, 107, 157, 0.6);
           animation-delay: 0.5s;
         }
 
         .star2 {
-          bottom: 80px;
-          left: 40px;
+          bottom: 100px;
+          left: 50px;
+          color: rgba(29, 209, 161, 0.5);
           animation-delay: 1.5s;
         }
 
         .star3 {
-          bottom: 40px;
-          right: 40px;
+          bottom: 50px;
+          right: 50px;
+          color: rgba(238, 90, 111, 0.5);
           animation-delay: 2s;
         }
 
@@ -289,26 +313,29 @@ export function DreamEcho({ entry, onDismiss, onViewFull }: DreamEchoProps) {
 
         .close-btn {
           position: absolute;
-          top: 16px;
-          right: 16px;
-          background: rgba(255, 255, 255, 0.8);
-          border: none;
+          top: 20px;
+          right: 20px;
+          background: rgba(255, 255, 255, 0.9);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 107, 157, 0.2);
           border-radius: 50%;
-          width: 36px;
-          height: 36px;
+          width: 40px;
+          height: 40px;
           display: flex;
           align-items: center;
           justify-content: center;
           cursor: pointer;
-          transition: all 0.2s ease;
-          color: #666;
+          transition: all 0.3s ease;
+          color: #7f8c8d;
           z-index: 10;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         .close-btn:hover {
-          background: rgba(255, 255, 255, 1);
-          color: #333;
-          transform: scale(1.1);
+          background: white;
+          color: #ff6b9d;
+          transform: rotate(90deg) scale(1.1);
+          box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
         }
 
         .echo-header {
@@ -320,27 +347,33 @@ export function DreamEcho({ entry, onDismiss, onViewFull }: DreamEchoProps) {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          width: 48px;
-          height: 48px;
-          background: linear-gradient(135deg, #d4567a, #ff6b9d);
+          width: 56px;
+          height: 56px;
+          background: linear-gradient(135deg, #ff6b9d, #feca57);
           border-radius: 50%;
           color: white;
-          margin-bottom: 12px;
+          margin-bottom: 16px;
+          box-shadow: 0 8px 24px rgba(255, 107, 157, 0.4);
+          animation: pulse 2s ease-in-out infinite;
         }
 
         .echo-title {
-          margin: 0 0 8px 0;
-          font-size: 24px;
-          font-weight: 600;
-          color: #d4567a;
-          text-shadow: 0 2px 4px rgba(212, 86, 122, 0.2);
+          margin: 0 0 10px 0;
+          font-size: 28px;
+          font-weight: 800;
+          background: linear-gradient(135deg, #ff6b9d, #c44569);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          letter-spacing: 0.5px;
         }
 
         .echo-subtitle {
           margin: 0;
-          font-size: 14px;
-          color: #999;
+          font-size: 15px;
+          color: #95a5a6;
           font-style: italic;
+          letter-spacing: 0.3px;
         }
 
         .echo-content {
@@ -348,28 +381,43 @@ export function DreamEcho({ entry, onDismiss, onViewFull }: DreamEchoProps) {
         }
 
         .memory-date {
-          font-size: 12px;
-          color: #999;
+          font-size: 13px;
+          color: #bdc3c7;
           text-align: center;
-          margin-bottom: 12px;
+          margin-bottom: 16px;
+          padding: 6px 16px;
+          background: rgba(255, 107, 157, 0.05);
+          border-radius: 20px;
+          display: inline-block;
+          width: auto;
         }
 
         .memory-title {
-          margin: 0 0 16px 0;
-          font-size: 18px;
-          font-weight: 600;
-          color: #333;
+          margin: 0 0 20px 0;
+          font-size: 20px;
+          font-weight: 700;
+          color: #2c3e50;
           text-align: center;
+          letter-spacing: 0.3px;
         }
 
         .memory-content {
-          line-height: 1.6;
-          color: #555;
-          margin-bottom: 16px;
+          line-height: 1.7;
+          color: #7f8c8d;
+          margin-bottom: 20px;
+          padding: 20px;
+          background: rgba(255, 245, 248, 0.5);
+          border-radius: 16px;
+          border: 1px solid rgba(255, 107, 157, 0.08);
         }
 
         .memory-content p {
-          margin: 0 0 8px 0;
+          margin: 0 0 10px 0;
+          font-size: 15px;
+        }
+
+        .memory-content p:last-child {
+          margin-bottom: 0;
         }
 
         .memory-tags {
@@ -380,13 +428,19 @@ export function DreamEcho({ entry, onDismiss, onViewFull }: DreamEchoProps) {
         }
 
         .emotion-tag {
-          padding: 4px 10px;
+          padding: 5px 12px;
           background: var(--tag-color);
           color: white;
-          border-radius: 12px;
-          font-size: 11px;
-          font-weight: 500;
+          border-radius: 14px;
+          font-size: 12px;
+          font-weight: 600;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          animation: fadeIn 0.5s ease backwards;
         }
+
+        .emotion-tag:nth-child(1) { animation-delay: 0.1s; }
+        .emotion-tag:nth-child(2) { animation-delay: 0.2s; }
+        .emotion-tag:nth-child(3) { animation-delay: 0.3s; }
 
         .echo-actions {
           display: flex;
@@ -398,35 +452,58 @@ export function DreamEcho({ entry, onDismiss, onViewFull }: DreamEchoProps) {
           display: flex;
           align-items: center;
           gap: 8px;
-          padding: 10px 16px;
+          padding: 12px 24px;
           border: none;
-          border-radius: 8px;
+          border-radius: 16px;
           font-size: 14px;
-          font-weight: 500;
+          font-weight: 600;
           cursor: pointer;
-          transition: all 0.2s ease;
+          transition: all 0.3s ease;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .btn::before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 0;
+          height: 0;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.3);
+          transform: translate(-50%, -50%);
+          transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:active::before {
+          width: 200px;
+          height: 200px;
         }
 
         .btn-primary {
-          background: #d4567a;
+          background: linear-gradient(135deg, #ff6b9d, #c44569);
           color: white;
+          box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
         }
 
         .btn-primary:hover {
-          background: #c44569;
-          transform: translateY(-1px);
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(255, 107, 157, 0.4);
         }
 
         .btn-secondary {
-          background: rgba(255, 255, 255, 0.8);
-          color: #666;
-          border: 1px solid rgba(212, 86, 122, 0.3);
+          background: rgba(255, 255, 255, 0.9);
+          color: #7f8c8d;
+          border: 1px solid rgba(255, 107, 157, 0.2);
+          backdrop-filter: blur(10px);
         }
 
         .btn-secondary:hover {
-          background: rgba(255, 255, 255, 1);
-          color: #333;
-          transform: translateY(-1px);
+          background: white;
+          color: #ff6b9d;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
 
         .petals {
@@ -441,10 +518,11 @@ export function DreamEcho({ entry, onDismiss, onViewFull }: DreamEchoProps) {
 
         .petal {
           position: absolute;
-          font-size: 16px;
-          animation: petalFall var(--duration) linear infinite;
+          font-size: 18px;
+          animation: petalFall var(--duration) ease-in-out infinite;
           animation-delay: var(--delay);
-          opacity: 0.7;
+          opacity: 0.8;
+          filter: drop-shadow(0 2px 4px rgba(255, 107, 157, 0.2));
         }
 
         .petal-1 { left: 10%; }
@@ -457,15 +535,21 @@ export function DreamEcho({ entry, onDismiss, onViewFull }: DreamEchoProps) {
         @keyframes petalFall {
           0% {
             top: -20px;
-            transform: rotate(0deg);
+            transform: translateX(0) rotate(0deg);
+            opacity: 0;
+          }
+          10% {
+            opacity: 0.8;
+          }
+          90% {
+            opacity: 0.8;
           }
           100% {
             top: 100%;
-            transform: rotate(360deg);
+            transform: translateX(50px) rotate(720deg);
+            opacity: 0;
           }
         }
-
-        @media (max-width: 768px) {
           .dream-echo-card {
             width: 95%;
             padding: 24px;

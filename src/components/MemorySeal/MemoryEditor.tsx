@@ -199,26 +199,45 @@ export function MemoryEditor({ entry, onSave, onCancel, isEditing }: MemoryEdito
         .memory-editor {
           max-width: 800px;
           margin: 0 auto;
-          padding: 20px;
-          background: #fff;
-          border-radius: 12px;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+          padding: 32px;
+          background: rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          border-radius: 24px;
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+          border: 1px solid rgba(255, 255, 255, 0.5);
+          animation: fadeIn 0.5s ease;
         }
 
         .editor-header {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          margin-bottom: 24px;
-          padding-bottom: 16px;
-          border-bottom: 2px solid #f0f0f0;
+          margin-bottom: 32px;
+          padding-bottom: 20px;
+          border-bottom: 2px solid rgba(255, 107, 157, 0.1);
+          position: relative;
+        }
+
+        .editor-header::after {
+          content: '';
+          position: absolute;
+          bottom: -2px;
+          left: 0;
+          width: 80px;
+          height: 2px;
+          background: linear-gradient(90deg, #ff6b9d, transparent);
         }
 
         .editor-title {
           margin: 0;
-          color: #d4567a;
-          font-size: 24px;
-          font-weight: 600;
+          font-size: 28px;
+          font-weight: 700;
+          background: linear-gradient(135deg, #ff6b9d, #c44569);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          letter-spacing: 0.5px;
         }
 
         .editor-actions {
@@ -230,36 +249,63 @@ export function MemoryEditor({ entry, onSave, onCancel, isEditing }: MemoryEdito
           display: flex;
           align-items: center;
           gap: 8px;
-          padding: 8px 16px;
+          padding: 10px 20px;
           border: none;
-          border-radius: 8px;
+          border-radius: 12px;
           font-size: 14px;
-          font-weight: 500;
+          font-weight: 600;
           cursor: pointer;
-          transition: all 0.2s ease;
+          transition: all 0.25s ease;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .btn::before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 0;
+          height: 0;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.3);
+          transform: translate(-50%, -50%);
+          transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:active::before {
+          width: 200px;
+          height: 200px;
         }
 
         .btn:disabled {
-          opacity: 0.6;
+          opacity: 0.5;
           cursor: not-allowed;
+          transform: none !important;
         }
 
         .btn-primary {
-          background: #d4567a;
+          background: linear-gradient(135deg, #ff6b9d, #c44569);
           color: white;
+          box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
         }
 
         .btn-primary:hover:not(:disabled) {
-          background: #c44569;
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(255, 107, 157, 0.4);
         }
 
         .btn-secondary {
-          background: #f5f5f5;
+          background: rgba(255, 255, 255, 0.8);
           color: #666;
+          border: 1px solid rgba(0, 0, 0, 0.1);
+          backdrop-filter: blur(10px);
         }
 
         .btn-secondary:hover:not(:disabled) {
-          background: #e0e0e0;
+          background: rgba(255, 255, 255, 0.95);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
 
         .editor-content {
@@ -271,118 +317,172 @@ export function MemoryEditor({ entry, onSave, onCancel, isEditing }: MemoryEdito
         .form-group {
           display: flex;
           flex-direction: column;
-          gap: 8px;
+          gap: 12px;
+          margin-bottom: 24px;
         }
 
         .form-label {
           font-weight: 600;
-          color: #333;
+          color: #2c3e50;
           display: flex;
           align-items: center;
           gap: 8px;
+          font-size: 15px;
+          letter-spacing: 0.3px;
         }
 
         .word-count {
           font-size: 12px;
-          color: #999;
+          color: #95a5a6;
           font-weight: normal;
+          background: rgba(255, 107, 157, 0.1);
+          padding: 2px 8px;
+          border-radius: 12px;
         }
 
         .form-input,
         .form-textarea {
-          padding: 12px;
-          border: 2px solid #e0e0e0;
-          border-radius: 8px;
-          font-size: 14px;
-          transition: border-color 0.2s ease;
+          padding: 14px 16px;
+          border: 2px solid rgba(0, 0, 0, 0.08);
+          border-radius: 12px;
+          font-size: 15px;
+          transition: all 0.3s ease;
           font-family: inherit;
+          background: rgba(255, 255, 255, 0.8);
+          backdrop-filter: blur(10px);
         }
 
         .form-input:focus,
         .form-textarea:focus {
           outline: none;
-          border-color: #d4567a;
+          border-color: #ff6b9d;
+          background: white;
+          box-shadow: 0 0 0 4px rgba(255, 107, 157, 0.1);
         }
 
         .title-input {
-          font-size: 16px;
-          font-weight: 500;
+          font-size: 17px;
+          font-weight: 600;
+          letter-spacing: 0.3px;
         }
 
         .content-textarea {
           resize: vertical;
-          min-height: 200px;
-          line-height: 1.6;
+          min-height: 240px;
+          line-height: 1.7;
+          font-size: 15px;
         }
 
         .emotion-tags {
           display: flex;
           flex-wrap: wrap;
-          gap: 8px;
+          gap: 10px;
         }
 
         .emotion-tag {
           display: flex;
           align-items: center;
           gap: 6px;
-          padding: 8px 12px;
+          padding: 10px 16px;
           border: 2px solid var(--tag-color);
-          background: transparent;
+          background: rgba(255, 255, 255, 0.8);
           color: var(--tag-color);
-          border-radius: 20px;
-          font-size: 12px;
-          font-weight: 500;
+          border-radius: 24px;
+          font-size: 13px;
+          font-weight: 600;
           cursor: pointer;
-          transition: all 0.2s ease;
+          transition: all 0.25s ease;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .emotion-tag::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: var(--tag-color);
+          opacity: 0;
+          transition: opacity 0.25s ease;
+        }
+
+        .emotion-tag > * {
+          position: relative;
+          z-index: 1;
         }
 
         .emotion-tag:hover {
-          background: var(--tag-color);
-          color: white;
+          transform: translateY(-2px) scale(1.05);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .emotion-tag:hover::before {
+          opacity: 0.1;
         }
 
         .emotion-tag.selected {
           background: var(--tag-color);
           color: white;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          transform: scale(1.05);
+        }
+
+        .emotion-tag.selected::before {
+          opacity: 1;
         }
 
         .content-preview {
-          padding: 16px;
-          background: #fafafa;
-          border-radius: 8px;
-          border: 1px solid #e0e0e0;
+          padding: 20px;
+          background: linear-gradient(135deg, rgba(255, 245, 248, 0.8) 0%, rgba(255, 232, 237, 0.8) 100%);
+          border-radius: 16px;
+          border: 1px solid rgba(255, 107, 157, 0.1);
+          backdrop-filter: blur(10px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         .preview-title {
-          margin: 0 0 12px 0;
-          color: #d4567a;
-          font-size: 18px;
-          font-weight: 600;
+          margin: 0 0 16px 0;
+          font-size: 20px;
+          font-weight: 700;
+          background: linear-gradient(135deg, #ff6b9d, #c44569);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
         }
 
         .preview-content {
-          margin-bottom: 12px;
-          line-height: 1.6;
-          color: #333;
+          margin-bottom: 16px;
+          line-height: 1.7;
+          color: #2c3e50;
+          font-size: 15px;
         }
 
         .preview-content p {
-          margin: 0 0 8px 0;
+          margin: 0 0 10px 0;
+        }
+
+        .preview-content p:last-child {
+          margin-bottom: 0;
         }
 
         .preview-tags {
           display: flex;
           flex-wrap: wrap;
-          gap: 6px;
+          gap: 8px;
+          padding-top: 12px;
+          border-top: 1px solid rgba(255, 107, 157, 0.1);
         }
 
         .preview-tag {
-          padding: 4px 8px;
+          padding: 5px 12px;
           background: var(--tag-color);
           color: white;
-          border-radius: 12px;
-          font-size: 11px;
-          font-weight: 500;
+          border-radius: 14px;
+          font-size: 12px;
+          font-weight: 600;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         @media (max-width: 768px) {
