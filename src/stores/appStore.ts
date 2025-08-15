@@ -67,7 +67,7 @@ function mapMemoryEntry(raw: any): MemoryEntry {
     createdAt: parseDate(raw.created_at ?? raw.createdAt),
     updatedAt: parseDate(raw.updated_at ?? raw.updatedAt),
     isEncrypted: !!(raw.is_encrypted ?? raw.isEncrypted),
-    attachments: raw.attachments ? raw.attachments.map(mapAttachment) : undefined,
+    attachments: raw.attachments ? raw.attachments.map(mapAttachment) : [],
     metadata: mapMetadata(raw.metadata),
   };
 }

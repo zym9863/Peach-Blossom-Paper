@@ -18,7 +18,11 @@ function App() {
 
   // 初始化应用
   useEffect(() => {
-    appActions.initialize();
+    const init = async () => {
+      await appActions.initialize();
+      await appActions.loadEntries();
+    };
+    init();
   }, []);
 
   /**
