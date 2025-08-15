@@ -12,8 +12,65 @@ import {
   SearchFilter, 
   ApiResponse,
   MemoryType,
-  EmotionTag 
+  EmotionTag,
+  Attachment,
+  MemoryMetadata 
 } from '../types';
+
+// 辅助类型与映射函数（后端 snake_case -> 前端 camelCase）
+function parseDate(d: any): Date {
+  const dt = d ? new Date(d) : new Date();
+  return isNaN(dt.getTime()) ? new Date() : dt;
+}
+
+function mapAttachment(raw: any): Attachment {
+  return {
+    id: raw.id,
+    fileName: raw.file_name,
+    filePath: raw.file_path,
+    fileType: raw.file_type,
+    fileSize: raw.file_size,
+    isEncrypted: raw.is_encrypted,
+    createdAt: parseDate(raw.created_at),
+  };
+}
+
+function mapMetadata(raw: any): MemoryMetadata | undefined {
+  if (!raw) return undefined;
+  return {
+    wordCount: raw.word_count ?? undefined,
+    readingTime: raw.reading_time ?? undefined,
+    location: raw.location ?? undefined,
+    weather: raw.weather ?? undefined,
+    mood: raw.mood ?? undefined,
+    tags: raw.tags ?? undefined,
+  };
+}
+
+function mapMemoryType(t: any): MemoryType {
+  switch (t) {
+    case 'text': return MemoryType.TEXT;
+    case 'image': return MemoryType.IMAGE;
+    case 'audio': return MemoryType.AUDIO;
+    case 'mixed': return MemoryType.MIXED;
+    default: return MemoryType.TEXT;
+  }
+}
+
+function mapMemoryEntry(raw: any): MemoryEntry {
+  return {
+    id: raw.id,
+    title: raw.title,
+    content: raw.content,
+    type: mapMemoryType(raw.memory_type ?? raw.type),
+    emotionTags: (raw.emotion_tags ?? raw.emotionTags ?? []).slice(),
+    createdAt: parseDate(raw.created_at ?? raw.createdAt),
+    updatedAt: parseDate(raw.updated_at ?? raw.updatedAt),
+    isEncrypted: !!(raw.is_encrypted ?? raw.isEncrypted),
+    attachments: raw.attachments ? raw.attachments.map(mapAttachment) : undefined,
+    metadata: mapMetadata(raw.metadata),
+  };
+}
 
 // 应用状态信号
 export const isLoading = signal(false);
@@ -123,7 +180,7 @@ export const appActions = {
       isLoading.value = true;
       error.value = null;
       
-      const response = await invoke<ApiResponse<MemoryEntry>>('create_memory_entry', {
+      const response = await invoke<ApiResponse<any>>('create_memory_entry', {
         title,
         content,
         memoryType: type,
@@ -136,9 +193,11 @@ export const appActions = {
       }
       
       // 更新本地状态
-      entries.value = [...entries.value, response.data];
+      const saved = mapMemoryEntry(response.data);
+      // 更新本地状态
+      entries.value = [...entries.value, saved];
       
-      return response.data;
+      return saved;
     } catch (err) {
       error.value = `创建记忆条目失败: ${err}`;
       throw err;
@@ -161,7 +220,7 @@ export const appActions = {
       isLoading.value = true;
       error.value = null;
       
-      const response = await invoke<ApiResponse<MemoryEntry>>('update_memory_entry', {
+      const response = await invoke<ApiResponse<any>>('update_memory_entry', {
         entryId,
         title,
         content,
@@ -174,19 +233,21 @@ export const appActions = {
       }
       
       // 更新本地状态
+      const updated = mapMemoryEntry(response.data);
+      // 更新本地状态
       const index = entries.value.findIndex((e: MemoryEntry) => e.id === entryId);
       if (index !== -1) {
         const newEntries = [...entries.value];
-        newEntries[index] = response.data;
+        newEntries[index] = updated;
         entries.value = newEntries;
       }
       
       // 如果是当前编辑的条目，也更新它
       if (currentEntry.value?.id === entryId) {
-        currentEntry.value = response.data;
+        currentEntry.value = updated;
       }
       
-      return response.data;
+      return updated;
     } catch (err) {
       error.value = `更新记忆条目失败: ${err}`;
       throw err;
@@ -234,7 +295,7 @@ export const appActions = {
       isLoading.value = true;
       error.value = null;
       
-      const response = await invoke<ApiResponse<MemoryEntry[]>>('get_all_memory_entries', {
+      const response = await invoke<ApiResponse<any[]>>('get_all_memory_entries', {
         password
       });
       
@@ -242,7 +303,7 @@ export const appActions = {
         throw new Error(response.error || '加载记忆条目失败');
       }
       
-      entries.value = response.data;
+      entries.value = response.data.map(mapMemoryEntry);
     } catch (err) {
       error.value = `加载记忆条目失败: ${err}`;
       throw err;
@@ -356,13 +417,13 @@ export const appActions = {
    */
   async getRandomMemory(): Promise<MemoryEntry | null> {
     try {
-      const response = await invoke<ApiResponse<MemoryEntry | null>>('get_random_memory');
+      const response = await invoke<ApiResponse<any | null>>('get_random_memory');
       
       if (!response.success) {
         throw new Error(response.error || '获取随机记忆失败');
       }
       
-      return response.data || null;
+      return response.data ? mapMemoryEntry(response.data) : null;
     } catch (err) {
       error.value = `获取随机记忆失败: ${err}`;
       return null;
