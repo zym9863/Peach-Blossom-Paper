@@ -1,6 +1,6 @@
 import { useState, useEffect } from "preact/hooks";
 import { MemoryEntry } from "./types";
-import { appActions, isLoading, error, currentEntry, filteredEntries } from "./stores/appStore";
+import { appActions, isLoading, error, currentEntry, filteredEntries, searchFilter } from "./stores/appStore";
 import { MemoryEditor } from "./components/MemorySeal/MemoryEditor";
 import { MemoryList } from "./components/MemorySeal/MemoryList";
 import { DreamEcho } from "./components/DreamEchoes/DreamEcho";
@@ -183,13 +183,35 @@ function App() {
       <main class="main-content">
         {viewMode === 'home' && renderHome()}
         {viewMode === 'list' && (
-          <MemoryList
-            entries={filteredEntries.value}
-            onSelect={handleEditMemory}
-            onDelete={handleDeleteMemory}
-            filter={{}}
-            onFilterChange={() => {}}
-          />
+          <div class="list-view">
+            <div class="list-top-bar">
+              <button class="btn btn-secondary" onClick={() => setViewMode('home')}>
+                返回主页
+              </button>
+              <button class="btn btn-primary" onClick={handleCreateNew}>
+                <PlusCircle size={16} />
+                新建记忆
+              </button>
+            </div>
+            <MemoryList
+              entries={filteredEntries.value}
+              onSelect={handleEditMemory}
+              onDelete={handleDeleteMemory}
+              filter={searchFilter.value}
+              onFilterChange={(f) => appActions.setSearchFilter(f)}
+            />
+            <style>{`
+              .list-top-bar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 12px;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 16px 20px 0 20px;
+              }
+            `}</style>
+          </div>
         )}
         {viewMode === 'editor' && (
           <MemoryEditor
