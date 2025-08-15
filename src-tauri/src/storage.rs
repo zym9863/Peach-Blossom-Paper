@@ -3,7 +3,7 @@
  * 负责管理本地数据的存储和检索
  */
 
-use crate::models::{MemoryEntry, UserSettings, DreamEchoConfig, SearchFilter};
+use crate::models::{MemoryEntry, SearchFilter};
 use crate::crypto::{BackendEncryption, EncryptionResult, DecryptionParams};
 use anyhow::{Result, anyhow};
 use serde_json;
@@ -15,8 +15,6 @@ use tokio::fs;
 pub struct StorageManager {
     data_dir: PathBuf,
     entries_file: PathBuf,
-    settings_file: PathBuf,
-    config_file: PathBuf,
 }
 
 impl StorageManager {
@@ -31,14 +29,10 @@ impl StorageManager {
         }
 
         let entries_file = data_dir.join("memories.json");
-        let settings_file = data_dir.join("settings.json");
-        let config_file = data_dir.join("config.json");
 
         Ok(Self {
             data_dir,
             entries_file,
-            settings_file,
-            config_file,
         })
     }
 
@@ -230,61 +224,6 @@ impl StorageManager {
         Ok(entries)
     }
 
-    /// 保存用户设置
-    pub async fn save_settings(&self, settings: &UserSettings) -> Result<()> {
-        let json_content = serde_json::to_string_pretty(settings)
-            .map_err(|e| anyhow!("Failed to serialize settings: {}", e))?;
-
-        fs::write(&self.settings_file, json_content).await
-            .map_err(|e| anyhow!("Failed to write settings file: {}", e))?;
-
-        Ok(())
-    }
-
-    /// 加载用户设置
-    pub async fn load_settings(&self) -> Result<UserSettings> {
-        if !self.settings_file.exists() {
-            let default_settings = UserSettings::default();
-            self.save_settings(&default_settings).await?;
-            return Ok(default_settings);
-        }
-
-        let content = fs::read_to_string(&self.settings_file).await
-            .map_err(|e| anyhow!("Failed to read settings file: {}", e))?;
-
-        let settings: UserSettings = serde_json::from_str(&content)
-            .map_err(|e| anyhow!("Failed to parse settings: {}", e))?;
-
-        Ok(settings)
-    }
-
-    /// 保存拾梦回响配置
-    pub async fn save_dream_config(&self, config: &DreamEchoConfig) -> Result<()> {
-        let json_content = serde_json::to_string_pretty(config)
-            .map_err(|e| anyhow!("Failed to serialize dream config: {}", e))?;
-
-        fs::write(&self.config_file, json_content).await
-            .map_err(|e| anyhow!("Failed to write config file: {}", e))?;
-
-        Ok(())
-    }
-
-    /// 加载拾梦回响配置
-    pub async fn load_dream_config(&self) -> Result<DreamEchoConfig> {
-        if !self.config_file.exists() {
-            let default_config = DreamEchoConfig::default();
-            self.save_dream_config(&default_config).await?;
-            return Ok(default_config);
-        }
-
-        let content = fs::read_to_string(&self.config_file).await
-            .map_err(|e| anyhow!("Failed to read config file: {}", e))?;
-
-        let config: DreamEchoConfig = serde_json::from_str(&content)
-            .map_err(|e| anyhow!("Failed to parse config: {}", e))?;
-
-        Ok(config)
-    }
 
     /// 获取随机记忆条目（用于拾梦回响）
     pub async fn get_random_entry(&self) -> Result<Option<MemoryEntry>> {
@@ -317,19 +256,6 @@ impl StorageManager {
                 .map_err(|e| anyhow!("Failed to backup entries: {}", e))?;
         }
 
-        // 备份设置
-        if self.settings_file.exists() {
-            let backup_settings_file = backup_dir.join("settings_backup.json");
-            fs::copy(&self.settings_file, backup_settings_file).await
-                .map_err(|e| anyhow!("Failed to backup settings: {}", e))?;
-        }
-
-        // 备份配置
-        if self.config_file.exists() {
-            let backup_config_file = backup_dir.join("config_backup.json");
-            fs::copy(&self.config_file, backup_config_file).await
-                .map_err(|e| anyhow!("Failed to backup config: {}", e))?;
-        }
 
         Ok(())
     }

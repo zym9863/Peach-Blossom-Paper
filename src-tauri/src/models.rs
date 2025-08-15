@@ -77,37 +77,6 @@ pub struct EncryptedData {
     pub algorithm: String,
 }
 
-/// 用户设置
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct UserSettings {
-    pub theme: String,
-    pub font_size: String,
-    pub auto_save: bool,
-    pub auto_save_interval: u32,
-    pub enable_dream_echoes: bool,
-    pub dream_echoes_frequency: String,
-    pub enable_notifications: bool,
-    pub encryption_enabled: bool,
-    pub backup_enabled: bool,
-    pub language: String,
-}
-
-/// 时间范围
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct TimeRange {
-    pub start: String, // HH:mm 格式
-    pub end: String,   // HH:mm 格式
-}
-
-/// 拾梦回响配置
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct DreamEchoConfig {
-    pub enabled: bool,
-    pub frequency: u32, // 小时
-    pub max_entries_per_day: u32,
-    pub preferred_time_ranges: Vec<TimeRange>,
-    pub excluded_days: Vec<u8>, // 0-6, 0为周日
-}
 
 /// 搜索过滤器
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -186,48 +155,6 @@ impl<T> ApiResponse<T> {
     }
 }
 
-/// 默认实现
-impl Default for UserSettings {
-    fn default() -> Self {
-        Self {
-            theme: "peach".to_string(),
-            font_size: "medium".to_string(),
-            auto_save: true,
-            auto_save_interval: 30,
-            enable_dream_echoes: true,
-            dream_echoes_frequency: "medium".to_string(),
-            enable_notifications: true,
-            encryption_enabled: true,
-            backup_enabled: false,
-            language: "zh-CN".to_string(),
-        }
-    }
-}
-
-impl Default for DreamEchoConfig {
-    fn default() -> Self {
-        Self {
-            enabled: true,
-            frequency: 6, // 6小时
-            max_entries_per_day: 3,
-            preferred_time_ranges: vec![
-                TimeRange {
-                    start: "09:00".to_string(),
-                    end: "11:00".to_string(),
-                },
-                TimeRange {
-                    start: "14:00".to_string(),
-                    end: "16:00".to_string(),
-                },
-                TimeRange {
-                    start: "19:00".to_string(),
-                    end: "21:00".to_string(),
-                },
-            ],
-            excluded_days: vec![], // 不排除任何天
-        }
-    }
-}
 
 impl MemoryEntry {
     /// 创建新的记忆条目

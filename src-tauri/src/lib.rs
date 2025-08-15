@@ -26,11 +26,6 @@ pub fn run() {
             decrypt_data,
             validate_password_strength,
 
-            // 设置相关命令
-            save_user_settings,
-            load_user_settings,
-            save_dream_config,
-            load_dream_config,
 
             // 拾梦回响相关命令
             get_random_memory,

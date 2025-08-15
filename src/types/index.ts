@@ -65,34 +65,6 @@ export interface EncryptionConfig {
   ivLength: number;
 }
 
-// 用户设置
-export interface UserSettings {
-  theme: 'light' | 'dark' | 'peach';
-  fontSize: 'small' | 'medium' | 'large';
-  autoSave: boolean;
-  autoSaveInterval: number; // 秒
-  enableDreamEchoes: boolean;
-  dreamEchoesFrequency: 'low' | 'medium' | 'high';
-  enableNotifications: boolean;
-  encryptionEnabled: boolean;
-  backupEnabled: boolean;
-  language: 'zh-CN' | 'en-US';
-}
-
-// 拾梦回响配置
-export interface DreamEchoConfig {
-  enabled: boolean;
-  frequency: number; // 小时
-  maxEntriesPerDay: number;
-  preferredTimeRanges: TimeRange[];
-  excludedDays: number[]; // 0-6, 0为周日
-}
-
-// 时间范围
-export interface TimeRange {
-  start: string; // HH:mm 格式
-  end: string;   // HH:mm 格式
-}
 
 // API 响应类型
 export interface ApiResponse<T = any> {
@@ -131,7 +103,6 @@ export interface ExportData {
   version: string;
   exportDate: Date;
   entries: MemoryEntry[];
-  settings: UserSettings;
   metadata: {
     totalEntries: number;
     dateRange: {
@@ -148,9 +119,7 @@ export interface AppState {
   entries: MemoryEntry[];
   filteredEntries: MemoryEntry[];
   searchFilter: SearchFilter;
-  settings: UserSettings;
   stats: MemoryStats;
-  dreamEchoConfig: DreamEchoConfig;
   isAuthenticated: boolean;
   lastSyncTime?: Date;
 }

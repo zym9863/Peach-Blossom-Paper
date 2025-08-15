@@ -5,10 +5,10 @@ import { MemoryEditor } from "./components/MemorySeal/MemoryEditor";
 import { MemoryList } from "./components/MemorySeal/MemoryList";
 import { DreamEcho } from "./components/DreamEchoes/DreamEcho";
 import { useDreamEchoes } from "./hooks/useDreamEchoes";
-import { PlusCircle, BookOpen, Settings, Heart, Moon, Search } from "lucide-preact";
+import { PlusCircle, BookOpen, Heart, Moon, Search } from "lucide-preact";
 import "./App.css";
 
-type ViewMode = 'home' | 'list' | 'editor' | 'settings';
+type ViewMode = 'home' | 'list' | 'editor';
 
 function App() {
   const [viewMode, setViewMode] = useState<ViewMode>('home');
@@ -136,31 +136,10 @@ function App() {
           <p>随机回顾一段过往的记忆</p>
         </div>
 
-        <div class="action-card" onClick={() => setViewMode('settings')}>
-          <Settings size={24} />
-          <h3>应用设置</h3>
-          <p>个性化你的桃花笺体验</p>
-        </div>
       </div>
     </div>
   );
 
-  /**
-   * 渲染设置页面
-   */
-  const renderSettings = () => (
-    <div class="settings-view">
-      <div class="settings-header">
-        <h2>应用设置</h2>
-        <button class="btn btn-secondary" onClick={() => setViewMode('home')}>
-          返回主页
-        </button>
-      </div>
-      <div class="settings-content">
-        <p>设置功能正在开发中...</p>
-      </div>
-    </div>
-  );
 
   if (isLoading.value) {
     return (
@@ -225,7 +204,6 @@ function App() {
             isEditing={isEditing}
           />
         )}
-        {viewMode === 'settings' && renderSettings()}
       </main>
 
       {/* 拾梦回响 */}

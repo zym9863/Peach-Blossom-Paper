@@ -3,7 +3,7 @@
  * 定义前端可以调用的所有后端命令
  */
 
-use crate::models::{MemoryEntry, UserSettings, DreamEchoConfig, SearchFilter, ApiResponse, MemoryType};
+use crate::models::{MemoryEntry, SearchFilter, ApiResponse, MemoryType};
 use crate::crypto::{BackendEncryption, DecryptionParams};
 use crate::storage::StorageManager;
 use tauri::{AppHandle, Manager};
@@ -36,9 +36,6 @@ async fn get_storage_manager(app: &AppHandle) -> Result<StorageManager, String> 
 pub async fn initialize_app(app: AppHandle) -> Result<ApiResponse<String>, String> {
     let storage = get_storage_manager(&app).await?;
     
-    // 确保默认设置和配置存在
-    let _ = storage.load_settings().await;
-    let _ = storage.load_dream_config().await;
     
     Ok(ApiResponse::success("应用初始化成功".to_string()))
 }
@@ -242,63 +239,6 @@ pub async fn validate_password_strength(password: String) -> Result<ApiResponse<
     Ok(ApiResponse::success(strength))
 }
 
-/// 保存用户设置
-#[tauri::command]
-pub async fn save_user_settings(
-    app: AppHandle,
-    settings: UserSettings,
-) -> Result<ApiResponse<()>, String> {
-    let storage = get_storage_manager(&app).await?;
-    
-    storage
-        .save_settings(&settings)
-        .await
-        .map_err(|e| format!("Failed to save settings: {}", e))?;
-    
-    Ok(ApiResponse::success_empty().with_message("设置已保存".to_string()))
-}
-
-/// 加载用户设置
-#[tauri::command]
-pub async fn load_user_settings(app: AppHandle) -> Result<ApiResponse<UserSettings>, String> {
-    let storage = get_storage_manager(&app).await?;
-    
-    let settings = storage
-        .load_settings()
-        .await
-        .map_err(|e| format!("Failed to load settings: {}", e))?;
-    
-    Ok(ApiResponse::success(settings))
-}
-
-/// 保存拾梦回响配置
-#[tauri::command]
-pub async fn save_dream_config(
-    app: AppHandle,
-    config: DreamEchoConfig,
-) -> Result<ApiResponse<()>, String> {
-    let storage = get_storage_manager(&app).await?;
-    
-    storage
-        .save_dream_config(&config)
-        .await
-        .map_err(|e| format!("Failed to save dream config: {}", e))?;
-    
-    Ok(ApiResponse::success_empty().with_message("拾梦回响配置已保存".to_string()))
-}
-
-/// 加载拾梦回响配置
-#[tauri::command]
-pub async fn load_dream_config(app: AppHandle) -> Result<ApiResponse<DreamEchoConfig>, String> {
-    let storage = get_storage_manager(&app).await?;
-    
-    let config = storage
-        .load_dream_config()
-        .await
-        .map_err(|e| format!("Failed to load dream config: {}", e))?;
-    
-    Ok(ApiResponse::success(config))
-}
 
 /// 获取随机记忆（用于拾梦回响）
 #[tauri::command]

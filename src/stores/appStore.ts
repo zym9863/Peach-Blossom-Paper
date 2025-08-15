@@ -7,8 +7,6 @@ import { signal, computed } from '@preact/signals';
 import { invoke } from '@tauri-apps/api/core';
 import { 
   MemoryEntry, 
-  UserSettings, 
-  DreamEchoConfig, 
   SearchFilter, 
   ApiResponse,
   MemoryType,
@@ -78,8 +76,6 @@ export const isAuthenticated = signal(false);
 export const currentEntry = signal<MemoryEntry | null>(null);
 export const entries = signal<MemoryEntry[]>([]);
 export const searchFilter = signal<SearchFilter>({});
-export const settings = signal<UserSettings | null>(null);
-export const dreamConfig = signal<DreamEchoConfig | null>(null);
 export const error = signal<string | null>(null);
 
 // 计算属性
@@ -130,11 +126,6 @@ export const appActions = {
       // 初始化后端
       await invoke<ApiResponse<string>>('initialize_app');
       
-      // 加载设置
-      await this.loadSettings();
-      
-      // 加载拾梦回响配置
-      await this.loadDreamConfig();
       
       console.log('应用初始化成功');
     } catch (err) {
@@ -326,91 +317,6 @@ export const appActions = {
     searchFilter.value = filter;
   },
 
-  /**
-   * 保存用户设置
-   */
-  async saveSettings(newSettings: UserSettings): Promise<void> {
-    try {
-      isLoading.value = true;
-      error.value = null;
-      
-      const response = await invoke<ApiResponse<void>>('save_user_settings', {
-        settings: newSettings
-      });
-      
-      if (!response.success) {
-        throw new Error(response.error || '保存设置失败');
-      }
-      
-      settings.value = newSettings;
-    } catch (err) {
-      error.value = `保存设置失败: ${err}`;
-      throw err;
-    } finally {
-      isLoading.value = false;
-    }
-  },
-
-  /**
-   * 加载用户设置
-   */
-  async loadSettings(): Promise<void> {
-    try {
-      const response = await invoke<ApiResponse<UserSettings>>('load_user_settings');
-      
-      if (!response.success || !response.data) {
-        throw new Error(response.error || '加载设置失败');
-      }
-      
-      settings.value = response.data;
-    } catch (err) {
-      error.value = `加载设置失败: ${err}`;
-      throw err;
-    }
-  },
-
-  /**
-   * 保存拾梦回响配置
-   */
-  async saveDreamConfig(config: DreamEchoConfig): Promise<void> {
-    try {
-      isLoading.value = true;
-      error.value = null;
-      
-      const response = await invoke<ApiResponse<void>>('save_dream_config', {
-        config
-      });
-      
-      if (!response.success) {
-        throw new Error(response.error || '保存拾梦回响配置失败');
-      }
-      
-      dreamConfig.value = config;
-    } catch (err) {
-      error.value = `保存拾梦回响配置失败: ${err}`;
-      throw err;
-    } finally {
-      isLoading.value = false;
-    }
-  },
-
-  /**
-   * 加载拾梦回响配置
-   */
-  async loadDreamConfig(): Promise<void> {
-    try {
-      const response = await invoke<ApiResponse<DreamEchoConfig>>('load_dream_config');
-      
-      if (!response.success || !response.data) {
-        throw new Error(response.error || '加载拾梦回响配置失败');
-      }
-      
-      dreamConfig.value = response.data;
-    } catch (err) {
-      error.value = `加载拾梦回响配置失败: ${err}`;
-      throw err;
-    }
-  },
 
   /**
    * 获取随机记忆（用于拾梦回响）

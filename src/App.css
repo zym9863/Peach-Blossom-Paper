@@ -271,35 +271,6 @@ body {
   line-height: 1.5;
 }
 
-/* 设置页面 */
-.settings-view {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.settings-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 32px;
-  padding-bottom: 16px;
-  border-bottom: 2px solid rgba(212, 86, 122, 0.2);
-}
-
-.settings-header h2 {
-  margin: 0;
-  color: #d4567a;
-  font-size: 28px;
-  font-weight: 600;
-}
-
-.settings-content {
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 16px;
-  padding: 32px;
-  text-align: center;
-  color: #666;
-}
 
 /* 响应式设计 */
 @media (max-width: 768px) {
@@ -327,11 +298,6 @@ body {
     grid-template-columns: 1fr;
   }
 
-  .settings-header {
-    flex-direction: column;
-    gap: 16px;
-    text-align: center;
-  }
 }
 
 @media (max-width: 480px) {
