@@ -1,5 +1,7 @@
 # 桃花笺 (Peach Blossom Paper)
 
+**中文** | [English](README-EN.md)
+
 一个优雅的个人记忆日记应用，让您安全地记录和回味人生中的珍贵时光。
 
 ## ✨ 特性
